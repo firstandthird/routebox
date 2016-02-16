@@ -1,6 +1,6 @@
 {
   "name": "routebox",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Transparent catbox-based response caching for Hapi servers",
   "main": "index.js",
   "scripts": {
