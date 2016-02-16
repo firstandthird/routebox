@@ -95,15 +95,28 @@ describe('routebox', function () {
             },
         });
 
+        server.route({
+            method: 'get', path: '/{b}',
+            config: {
+                cache: { expiresIn: 1000, privacy: 'private' },
+                handler: (req, reply) => reply(i++),
+            },
+        });
+
         var i = 0;
-        server.inject({ method: 'GET', url: '/a' }, (res) => {
+        server.inject({ method: 'GET', url: '/b' }, (res) => {
             expect(res.result).to.equal(0);
             expect(res.statusCode).to.equal(200);
 
             server.inject({ method: 'GET', url: '/a' }, (res2) => {
                 expect(res2.result).to.equal(1);
                 expect(res2.statusCode).to.equal(200);
-                done();
+
+                server.inject({ method: 'GET', url: '/a' }, (res2) => {
+                    expect(res2.result).to.equal(2);
+                    expect(res2.statusCode).to.equal(200);
+                    done();
+                });
             });
         });
     });
