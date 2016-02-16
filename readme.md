@@ -22,6 +22,7 @@ These options are available when routebox is registered and can also be overridd
  * `enabled` whether to enable caching on the endpoint. Defaults to `true`, meaning all viable (see above) endpoints will be cached.
  * `digest` defaults to `djb2`, this is the algorithm used to digest the request for caching purposes. Other available options are: `md5`, `sha1`, `sha256`, `sha512`, `ripemd160`.
  * `segment` is the Catbox cache segment to store in. Defaults to `routebox`
+ * `wasCachedHeader` header that gets sent down when we serve a cached response. Defaults to `X-Was-Cached`.
  * `parse` configures which parts of the request will be used to form the cache key:
     * `query` whether to include the query string. Defaults to `true`.
     * `method` whether to include the request method. Defaults to `true`.
