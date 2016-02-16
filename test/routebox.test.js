@@ -148,4 +148,29 @@ describe('routebox', function () {
             });
         });
     });
+
+    it('respects reply.nocache', function (done) {
+        server.route({
+            method: 'get', path: '/a',
+            config: {
+                cache: { expiresIn: 1000 },
+                handler: (req, reply) => {
+                    req.nocache();
+                    reply(i++);
+                },
+            },
+        });
+
+        var i = 0;
+        server.inject({ method: 'GET', url: '/a' }, (res) => {
+            expect(res.result).to.equal(0);
+            expect(res.statusCode).to.equal(200);
+
+            server.inject({ method: 'GET', url: '/a' }, (res2) => {
+                expect(res2.result).to.equal(1);
+                expect(res2.statusCode).to.equal(200);
+                done();
+            });
+        });
+    });
 });

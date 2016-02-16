@@ -26,3 +26,5 @@ These options are available when routebox is registered and can also be overridd
     * `query` whether to include the query string. Defaults to `true`.
     * `method` whether to include the request method. Defaults to `true`.
     * `path` whether to include the route path. Defaults to `true`.
+
+If there's an endpoint that can sometimes provide private data, you can call `request.nocache()` to prevent Routebox from caching the request.
