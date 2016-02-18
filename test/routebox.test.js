@@ -195,4 +195,41 @@ describe('routebox', function () {
             });
         });
     });
+
+    it('uses callback functions', function (done) {
+        var missCalled = 0;
+        var hitCalled = 0;
+        server.route({
+            method: 'get', path: '/a',
+            config: {
+                cache: {
+                    expiresIn: 1000,
+                },
+                plugins: {
+                    routebox: {
+                        callback: {
+                            onCacheHit(req, reply) {
+                                hitCalled++;
+                                reply.continue();
+                            },
+                            onCacheMiss(req, reply) {
+                                missCalled++;
+                                reply.continue();
+                            },
+                        },
+                    },
+                },
+                handler: (req, reply) => reply('ok'),
+            },
+        });
+
+        server.inject({ method: 'GET', url: '/a' }, (res) => {
+            expect(missCalled).to.equal(1);
+
+            server.inject({ method: 'GET', url: '/a' }, (res2) => {
+                expect(hitCalled).to.equal(1);
+                done();
+            });
+        });
+    });
 });
