@@ -1,6 +1,6 @@
 const Hapi = require('hapi');
 const expect = require('chai').expect;
-const sinon = require('sinon');
+const Timekeeper = require('timekeeper');
 
 function assertCached(res) {
     expect(res.headers['x-was-cached']).to.exist;
@@ -13,20 +13,21 @@ function assertNotCached(res) {
 
 describe('routebox', function () {
     var server;
-    var clock;
     beforeEach(function (done) {
-        clock = sinon.useFakeTimers();
         server = new Hapi.Server();
         server.connection();
         server.register(require('../'), (err) => {
             expect(err).to.not.exist;
-            server.start(done);
+
+            server.start((err) => {
+              expect(err).to.not.exist;
+              done();
+            });
         });
     });
 
     afterEach(function (done) {
         server.stop(done);
-        clock.restore();
     });
 
     it('caches responses', function (done) {
@@ -67,7 +68,7 @@ describe('routebox', function () {
             expect(res.result).to.equal(0);
             expect(res.statusCode).to.equal(200);
             assertNotCached(res);
-            clock.tick(1001);
+            Timekeeper.travel(Date.now() + 1001);
 
             server.inject({ method: 'GET', url: '/a' }, (res2) => {
                 expect(res2.result).to.equal(1);

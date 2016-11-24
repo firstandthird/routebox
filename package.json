@@ -26,9 +26,9 @@
     "chai": "^3.4.1",
     "eslint": "^2.2.0",
     "eslint-config-airbnb": "^7.0.0",
-    "hapi": "^14.0.0",
+    "hapi": "^15.2.0",
     "mocha": "^3.0.1",
-    "sinon": "^1.17.2"
+    "timekeeper": "^1.0.0"
   },
   "dependencies": {
     "es-hash": "^1.0.4",
