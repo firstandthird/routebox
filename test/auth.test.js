@@ -15,7 +15,6 @@ describe('auth, plugin-level option', function () {
         server = new Hapi.Server();
         server.connection();
         const validate = function (request, username, password, callback) {
-          console.log('validate:')
             callback(err, true, { id: 'userId', name: 'robotnik' });
         };
         // scheme always returns good:
@@ -72,7 +71,6 @@ describe('auth, route-level option', function () {
         server = new Hapi.Server();
         server.connection();
         const validate = function (request, username, password, callback) {
-          console.log('validate:')
             callback(err, true, { id: 'userId', name: 'robotnik' });
         };
         // scheme always returns good:
