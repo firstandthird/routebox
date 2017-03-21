@@ -54,6 +54,33 @@ describe('routebox', function () {
         });
     });
 
+    it('caches responses but does not specify cache-control headers when plugins.routebox.pluginCache is set', function (done) {
+        server.route({
+            method: 'get', path: '/a',
+            config: {
+                plugins: {
+                    routebox: {
+                      pluginCache: { expiresIn: 1000 }
+                    }
+                },
+                handler: (req, reply) => reply(i++),
+            },
+        });
+
+        var i = 0;
+        server.inject({ method: 'GET', url: '/a' }, (res) => {
+            expect(res.result).to.equal(0);
+            expect(res.statusCode).to.equal(200);
+            assertNotCached(res);
+            server.inject({ method: 'GET', url: '/a' }, (res2) => {
+                expect(res2.result).to.equal(0);
+                expect(res2.statusCode).to.equal(200);
+                expect(res2.headers['cache-control']).to.equal('no-cache');
+                done();
+            });
+        });
+    });
+
     it('expires ttl correctly', function (done) {
         server.route({
             method: 'get', path: '/a',
@@ -233,4 +260,5 @@ describe('routebox', function () {
             });
         });
     });
+
 });
