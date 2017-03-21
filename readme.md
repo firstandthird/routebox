@@ -30,5 +30,6 @@ These options are available when routebox is registered and can also be overridd
  * `callbacks` provides touch-points you can use to intercept the request and gather metrics. Each callback functions like a Hapi extension, taking the `(request, reply)` as arguments, after which you should call `reply.continue()`. These are called at the `onPreResponse` lifecycle point.
     * `onCacheHit` is called when a cached page is served.
     * `onCacheMiss` is called when a page that could be cached but is not (yet) is served.
+    * `auth` will skip caching if a user has been authenticated. Defaults to `false`, meaning always cache regardless of whether there is a request.auth object. 
 
 If there's an endpoint that can sometimes provide private data, you can call `request.nocache()` to prevent Routebox from caching the request.
