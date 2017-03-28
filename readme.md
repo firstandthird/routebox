@@ -32,4 +32,7 @@ These options are available when routebox is registered and can also be overridd
     * `onCacheMiss` is called when a page that could be cached but is not (yet) is served.
     * `auth` will skip caching if a user has been authenticated. Defaults to `false`, meaning always cache regardless of whether there is a request.auth object. 
 
+In addition there is one other setting that can be specified only in `config.plugins.routebox`:
+
+ * `pluginCache` can be used to set cache options instead of config.cache.  So caching works as specified by `config.plugins.routebox.pluginCache`, but cache-control directives aren't sent out to the browser.
 If there's an endpoint that can sometimes provide private data, you can call `request.nocache()` to prevent Routebox from caching the request.
